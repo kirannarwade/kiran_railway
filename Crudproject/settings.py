@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%!@+#6bof82709i8^3=$7%&d)-cz8urh0or&kba-9)6ixvkxbc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'Crudproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'HgI0A3gtbs0ruHEaflG0',
+        'HOST': 'containers-us-west-182.railway.app',
+        'PORT': '7590',
     }
 }
 
