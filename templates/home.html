@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+
+<div class="container my-3">
+    <h3 class="text-center my-3">Add Your Todo</h3>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group my-2">
+          <label for="exampleInputEmail1">Title</label>
+          <input type="text" name="title" class="form-control" required>
+        </div>
+        <div class="form-group my-2">
+          <label for="exampleInputPassword1">Description</label>
+          <input type="text" name="desc" class="form-control" id="exampleInputPassword1" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+</div>
+
+<div class="container">
+
+    <h3 class="text-center">Your Todos</h3>
+    {% if all_todos|length == 0 %}
+    <div class="alert alert-secondary" role="alert">
+        No Todos Available! Add Your First Todo Now!
+      </div>
+    {% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Title</th>
+                <th scope="col">Desc</th>
+                <th scope="col">Date & Time</th>
+                <th scope="col">Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for td in all_todos %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{td.title}}</td>
+            <td>{{td.desc}}</td>
+            <td>{{td.date_time}}</td>
+            <td><a href="/update/{{td.pk}}"><button type="button" class="btn btn-secondary">Update</button></a>
+            <a href="/delete/{{td.pk}}"><button type="button" class="btn btn-secondary">Delete</button></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+</div>
+    
+{% endblock body %}

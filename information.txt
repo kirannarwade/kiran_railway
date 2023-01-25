@@ -1,0 +1,28 @@
+1 . Admin Panel id, pass
+  user      - asn
+  password  - asn
+
+
+2. install django
+  pip install django
+
+
+3. create a django project
+   django-admin startproject [projectname]
+
+4. start server
+  python manage.py runserver
+
+5. migrate/migrations
+   python manage.py makemigrations
+   python manage.py migrate
+
+6. create app
+   python manage.py startapp [appname]
+
+
+7. create superuser/admin user
+   python manage.py createsuperuser
+
+
+# Developed by Kiran M. Narwade - Python/Django Developer...
