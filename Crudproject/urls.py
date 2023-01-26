@@ -16,6 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
+admin.site.site_header = "Kiran Admin"
+admin.site.site_title = "Kiran Admin Portal"
+admin.site.index_title = "Welcome to Kiran Admin Portal"
+
+
 urlpatterns = [
     path('admin-kmn/', admin.site.urls),
     path('', include('app.urls'))
