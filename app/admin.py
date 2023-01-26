@@ -1,16 +1,22 @@
 from django.contrib import admin
-from .models import Todo, Contact
+from app.models import Todo, Contact, ContactUs
 
 # Register your models here.
 
 
-# admin.site.register(Todo)       <----- Normal Way
-
-
 @admin.register(Todo)
-class TodoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'desc', 'date_time']    # <-- Advance Way
+class TodoModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'title', 'desc', 'date_created']
+    list_filter = ('user',)
 
-@admin.register(Contact)
-class ContactAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'email', 'phone', 'messege']    # <-- Advance Way
+# @admin.register(Contact)
+# class ContactModelAdmin(admin.ModelAdmin):
+#     list_display = ['id', 'user', 'phone', 'desc', 'datetime']
+#     list_filter = ('user',)
+
+# admin.site.register(ContactUs)
+
+@admin.register(ContactUs)
+class ContactUsModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'name', 'email', 'mobile_number', 'hobbies', 'messege']
+    list_filter = ('user',)

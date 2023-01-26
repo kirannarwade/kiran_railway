@@ -22,6 +22,11 @@ admin.site.site_title = "Kiran Admin Portal"
 admin.site.index_title = "Welcome to Kiran Admin Portal"
 
 
+handler404 = 'app.views.error_404'
+handler403 = 'app.views.error_403'
+handler400 = 'app.views.error_400'
+
+
 urlpatterns = [
     path('admin-kmn/', admin.site.urls),
     path('', include('app.urls'))

@@ -3,54 +3,58 @@
 {% block title %}Home{% endblock title %}
 
 {% block body %}
+{% load humanize %} 
 
 <div class="container my-3">
-    <h3 class="text-center my-3">Add Your Todo</h3>
-    <form method="POST">
+    <h2 class="text-center">Add a Todo</h2>
+    <form method="post">
         {% csrf_token %}
-        <div class="form-group my-2">
-          <label for="exampleInputEmail1">Title</label>
-          <input type="text" name="title" class="form-control" required>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Todo Title</label>
+          <input type="text" class="form-control" id="title" name="title" required>
         </div>
-        <div class="form-group my-2">
-          <label for="exampleInputPassword1">Description</label>
-          <input type="text" name="desc" class="form-control" id="exampleInputPassword1" required>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Todo Description</label>
+          <input type="text" class="form-control" id="desc" name="desc">
         </div>
-
-        <button type="submit" class="btn btn-success">Submit</button>
+        
+        <button type="submit" class="btn btn-success">Add Todo</button>
       </form>
 </div>
 
-<div class="container">
-
+<div class="container my-2">
     <h3 class="text-center">Your Todos</h3>
-    {% if all_todos|length == 0 %}
-    <div class="alert alert-secondary" role="alert">
-        No Todos Available! Add Your First Todo Now!
-      </div>
+    {% if allTodo|length == 0 %}
+    <div class="alert alert-dark" role="alert">
+      No Todos found. Add your first todo now!
+    </div>
+
     {% else %}
-    <table class="table">
+    <table class="table table-sm table-striped">
         <thead>
-            <tr>
-                <th scope="col">S.No</th>
-                <th scope="col">Title</th>
-                <th scope="col">Desc</th>
-                <th scope="col">Date & Time</th>
-                <th scope="col">Actions</th>
-                
-            </tr>
+          <tr>
+            <th scope="col">S No</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Time</th>
+            <th scope="col">Action</th>
+          </tr>
         </thead>
         <tbody>
-            {% for td in all_todos %}
+            {% for todo in allTodo %}
           <tr>
             <th scope="row">{{forloop.counter}}</th>
-            <td>{{td.title}}</td>
-            <td>{{td.desc}}</td>
-            <td>{{td.date_time}}</td>
-            <td><a href="/update/{{td.pk}}"><button type="button" class="btn btn-secondary">Update</button></a>
-            <a href="/delete/{{td.pk}}"><button type="button" class="btn btn-secondary">Delete</button></a></td>
+            <td>{{todo.title}}</td>
+            <td>{{todo.desc}}</td>
+            <td><span class="badge badge-secondary">{{todo.date_created|naturaltime}}</span></td>
+            <td>
+                <a href="/update-todo/{{todo.pk}}" type="button" class="btn btn-outline-success btn-sm mx-1">Update</button>
+                <a href="/delete-todo/{{todo.id}}" type="button" class="btn btn-outline-info btn-sm mx-1">Delete</button>  
+              </td> 
           </tr>
           {% endfor %}
+         
+          
         </tbody>
       </table>
       {% endif %}

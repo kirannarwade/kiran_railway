@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'django.contrib.humanize',
     # 'whitenoise.runserver_nostatic', # new
 ]
 
@@ -82,9 +83,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'HgI0A3gtbs0ruHEaflG0',
-        'HOST': 'containers-us-west-182.railway.app',
-        'PORT': '7590',
+        'PASSWORD': 'aYCcy5fjCeihVNU49RK8',
+        'HOST': 'containers-us-west-186.railway.app',
+        'PORT': '7583',
     }
 }
 
@@ -138,3 +139,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # new
+
+LOGIN_REDIRECT_URL = '/'

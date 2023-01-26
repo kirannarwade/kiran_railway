@@ -1,50 +1,129 @@
-from django.shortcuts import render, redirect
-from .models import Todo, Contact
-from datetime import datetime
+from django.shortcuts import render, redirect, HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from app.models import Todo, Contact, ContactUs
+from django.views import View
+from datetime import datetime
+from django.utils import timezone
+from .forms import UserRegistrationForm, UserProfileForm
 
 # Create your views here.
 
-def home(request):
-    all_todos = Todo.objects.all()
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        desc = request.POST.get('desc')
-        todo = Todo(title=title, desc=desc, date_time=datetime.now())
-        todo.save()
-        messages.success(request, 'New Todo Added Successfully!')
-        return redirect('/')
-    return render(request, 'home.html', {'all_todos':all_todos})
+class HomeView(View):
+    def get(self, request):
+        if request.user.is_anonymous:
+            messages.warning(request, "Please Login to use website")
+            return redirect('/login')
+        else:
+            allTodo = Todo.objects.filter(user=request.user)
+            context = {'allTodo':allTodo}
+        return render(request, "home.html", context)
+
+    def post(self, request):
+        if request.method == "POST":
+            user = request.user
+            title = request.POST.get('title')
+            desc = request.POST.get('desc')
+            todo = Todo(user=user, title=title, desc=desc, date_created= datetime.today())
+            todo.save()
+            messages.success(request, str(user).capitalize() + " Your Todo Added Successfully!")
+            return redirect('/')
+
+        return render(request, "home.html")
+
+
+
+def loginUser(request):
+    return render(request, "login.html")
+
+
+
+class CustomerRegistrationView(View):
+    def get(self, request):
+        form = UserRegistrationForm()
+        return render(request, 'signup.html', {'form':form})
+
+
+    def post(self, request):
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            messages.success(request, "Account Register Successfully!")
+            form.save()
+        return render(request, 'signup.html', {'form':form})
+
+def logoutUser(request):
+    logout(request)
+    messages.success(request, "Logout Successfully")
+    return redirect('/login')
+
 
 def about(request):
-    return render(request, 'about.html')
+    if request.user.is_anonymous:
+        messages.warning(request, "Please Login to use website")
+        return redirect('/login')
+    return render(request, "about.html")
 
-def contact(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        messege = request.POST.get('messege')
-        contact = Contact(name=name, email=email, phone=phone, messege=messege)
-        contact.save()
-        messages.success(request, f'{name.capitalize()} Your Messege has been sent Successfully!')
-        return redirect('/contact')
-    return render(request, 'contact.html')
-
-def update_todo(request, pk):
-    get_todo_id = Todo.objects.get(pk=pk)
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        desc = request.POST.get('desc')
-        todo = Todo(pk=pk, title=title, desc=desc, date_time=datetime.now())
-        todo.save()
-        messages.success(request, 'Your Todo Updated Successfully!')
-        return redirect('/')
-    return render(request, 'update.html', {'get_todo_id':get_todo_id})
-
-def delete_todo(request, pk):
-    get_todo_id = Todo.objects.get(pk=pk)
-    get_todo_id.delete()
-    messages.success(request, 'Todo Deleted Successfully!')
+def deleteTodo(request, id):
+    todo = Todo.objects.get(pk=id)
+    todo.delete()
+    messages.success(request, str(request.user).capitalize() + " Your Todo Deleted Successfully!")
     return redirect('/')
 
+class UpdateView(View):
+    def get(self, request, pk):
+        try:
+            todo = Todo.objects.get(pk=pk, user = request.user)
+            context = {'todo':todo}
+            return render(request, "update.html", context)
+        except:
+            return render(request, "error_404.html")
+
+    def post(self, request, pk):
+        if request.method == "POST":
+            user = request.user
+            title = request.POST.get('title')
+            desc = request.POST.get('desc')
+            todo = Todo(pk=pk, user=user, title=title, desc=desc, date_created= timezone.now())
+            todo.save()
+            messages.success(request, str(user).capitalize() + " Your Todo Updated Successfully!")
+            return redirect('/')
+
+
+
+class ProfileView(View):
+    def get(self, request):
+        form = UserProfileForm()
+        context = {'form':form}
+        return render(request, "contact.html", context)
+
+
+    def post(self, request):
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            mobile_number = form.cleaned_data['mobile_number']
+            hobbies = form.cleaned_data['hobbies'] 
+            messege = form.cleaned_data['messege'] 
+            reg = ContactUs(user=request.user, name=name, email=email, mobile_number=mobile_number, hobbies=hobbies, messege=messege)
+            reg.save()
+            messages.success(request, str(name).capitalize() + " Your Messege has been sent Successfully Our Admin-Kiran!")
+            return redirect('/contact')
+
+        return render(request, "contact.html", {'form':form})
+   
+
+
+def error_404(request, exception):
+        data = {}
+        return render(request,'error_404.html', data)
+
+
+def error_403(request,  exception):
+        data = {}
+        return render(request,'error_404.html', data)
+
+def error_400(request,  exception):
+        data = {}
+        return render(request,'error_404.html', data)
