@@ -18,5 +18,5 @@ class TodoModelAdmin(admin.ModelAdmin):
 
 @admin.register(ContactUs)
 class ContactUsModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'name', 'email', 'mobile_number', 'hobbies', 'messege']
+    list_display = ['id', 'user', 'name', 'email', 'mobile_number', 'hobbies', 'messege', 'date_time']
     list_filter = ('user',)

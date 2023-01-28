@@ -130,7 +130,7 @@ class ProfileView(View):
                 mobile_number = form.cleaned_data['mobile_number']
                 hobbies = form.cleaned_data['hobbies'] 
                 messege = form.cleaned_data['messege'] 
-                reg = ContactUs(user=request.user, name=name, email=email, mobile_number=mobile_number, hobbies=hobbies, messege=messege)
+                reg = ContactUs(user=request.user, name=name, email=email, mobile_number=mobile_number, hobbies=hobbies, messege=messege, date_time=datetime.now())
                 reg.save()
                 messages.success(request, str(name).capitalize() + " Your Messege has been sent Successfully Our Admin-Kiran!")
                 return redirect('/contact')

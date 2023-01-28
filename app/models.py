@@ -48,3 +48,4 @@ class ContactUs(models.Model):
     mobile_number = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10,10}$')])
     hobbies = models.CharField(choices=HOBBIES_CHOICES, max_length=30)
     messege = models.TextField()
+    date_time = models.DateTimeField(auto_now_add=True)
