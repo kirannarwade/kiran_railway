@@ -9,6 +9,7 @@ from .forms import UserRegistrationForm, UserProfileForm
 
 # Create your views here.
 
+#This is home page
 class HomeView(View):
     def get(self, request):
         try:
