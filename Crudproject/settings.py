@@ -29,6 +29,10 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -83,7 +87,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'aYCcy5fjCeihVNU49RK8',
+        'PASSWORD': '18gu3QdN8M18ddAne1p1',
         'HOST': 'containers-us-west-186.railway.app',
         'PORT': '7583',
     }
